@@ -1,0 +1,33 @@
+{
+  "compilerOptionsUsed": {
+    "ignoreUnusedConstantsWarnings": false,
+    "ignoreUnusedVariablesWarnings": false,
+    "ignoreUnusedFieldsWarnings": false,
+    "ignoreUnusedPrivateFunctionsWarnings": false,
+    "ignoreUpdateFieldsCheckWarnings": false,
+    "ignoreCheckExternalCallerWarnings": false
+  },
+  "infos": {
+    "IToken": {
+      "sourceFile": "../node_modules/@alephium/web3/std/token_interface.ral",
+      "sourceCodeHash": "ec86200b80f31f7f0f68508cdce42042738326cdd4e8f109c402ba03e00033ba",
+      "bytecodeDebugPatch": "",
+      "codeHashDebug": "",
+      "warnings": []
+    },
+    "TokenFaucet": {
+      "sourceFile": "token.ral",
+      "sourceCodeHash": "3be7b636dd3f32272874af49ae42fae19b9055982318b240c7312c92e952d65c",
+      "bytecodeDebugPatch": "=20-2+67=101+3a0047e02=1+75468652063757272656e742062616c616e63652069732000=46",
+      "codeHashDebug": "8a31d022c32a5ba370513600f9a80fd29c1268fea3748e3867622fb59795027e",
+      "warnings": []
+    },
+    "Withdraw": {
+      "sourceFile": "withdraw.ral",
+      "sourceCodeHash": "52423580f02f5aab7050bfb9a14b497ea4bdcb10b3444483650f3dad8e0e5330",
+      "bytecodeDebugPatch": "",
+      "codeHashDebug": "",
+      "warnings": []
+    }
+  }
+}

@@ -65,51 +65,58 @@ export const TokenDapp: FC<{
 
       <div className="columns">
         <form onSubmit={handleWithdrawSubmit}>
-          <h2 className={styles.title}>Alephium Token Faucet on {network}</h2>
-          <p>Since current address group is {addressGroup}, only token from {addressGroup} can be withdrawn.</p>
-          <p>Only one token can be withdrawn at a time.</p>
-
-          <table>
-            <thead>
-              <tr>
-                <td>id</td>
-                <th>group</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                faucetContractIdByGroup && Object.keys(faucetContractIdByGroup).map((group, index) => {
-                  if (addressGroup === parseInt(group)) {
-                    return (
-                      <tr key={index} style={{ background: "red", color: "white" }}>
-                        <td>{faucetContractIdByGroup[parseInt(group)]}</td>
-                        <td>{group}</td>
-                      </tr>
-                    )
-                  } else {
-                    return (
-                      <tr key={index} style={{ color: "lightgrey" }}>
-                        <td>{faucetContractIdByGroup[parseInt(group)]}</td>
-                        <td>{group}</td>
-                      </tr>
-                    )
-                  }
-                })
-              }
-            </tbody>
-          </table>
-          <label htmlFor="withdraw-amount">Amount</label>
-          <input
-            type="number"
-            id="transfer-amount"
-            name="amount"
-            max="10"
-            min="1"
-            value={withdrawAmount}
-            onChange={(e) => setWithdrawAmount(e.target.value)}
-          />
-          <br />
-          <input type="submit" disabled={buttonsDisabled} value="Send Me Token" />
+          {
+            faucetContractIdByGroup && Object.keys(faucetContractIdByGroup).length > 0 ? (
+              <>
+                <h2 className={styles.title}>Alephium Token Faucet on {network}</h2>
+                <p>Since current address group is {addressGroup}, only token from {addressGroup} can be withdrawn.</p>
+                <p>Maximum 10 tokens can be withdrawn at a time.</p>
+                <table>
+                  <thead>
+                    <tr>
+                      <td>id</td>
+                      <th>group</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      Object.keys(faucetContractIdByGroup).map((group, index) => {
+                        if (addressGroup === parseInt(group)) {
+                          return (
+                            <tr key={index} style={{ background: "red", color: "white" }}>
+                              <td>{faucetContractIdByGroup[parseInt(group)]}</td>
+                              <td>{group}</td>
+                            </tr>
+                          )
+                        } else {
+                          return (
+                            <tr key={index} style={{ color: "lightgrey" }}>
+                              <td>{faucetContractIdByGroup[parseInt(group)]}</td>
+                              <td>{group}</td>
+                            </tr>
+                          )
+                        }
+                      })
+                    }
+                  </tbody>
+                </table>
+                <label htmlFor="withdraw-amount">Amount</label>
+                <input
+                  type="number"
+                  id="transfer-amount"
+                  name="amount"
+                  max="10"
+                  min="1"
+                  value={withdrawAmount}
+                  onChange={(e) => setWithdrawAmount(e.target.value)}
+                />
+                <br />
+                <input type="submit" disabled={buttonsDisabled} value="Send Me Token" />
+              </>
+            ) : (<>
+              No token faucet detected on {network}, please run <code>npx @alephium/cli deploy -n {network}</code> to deploy the token faucet contract.
+            </>)
+          }
         </form>
       </div >
     </>

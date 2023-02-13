@@ -117,7 +117,7 @@ export const TokenDapp: FC<{
   return (
     <>
       <h3 style={{ margin: 0 }}>
-        Current transaction status: <code>{transactionStatus}</code>
+        Transaction status: <code>{transactionStatus}</code>
       </h3>
       {lastTransactionHash && (
         <h3 style={{ margin: 0 }}>
@@ -143,19 +143,38 @@ export const TokenDapp: FC<{
       <div className="columns">
         <form onSubmit={handleTransferSubmit}>
           <h2 className={styles.title}>Alephium Token Faucet</h2>
-          {
-            faucetContractIdByGroup && Object.keys(faucetContractIdByGroup).map((group, index) => {
-              return (<li key={index}>{faucetContractIdByGroup[`${group}`]} (Group {group})</li>)
-            })
-          }
-          <label htmlFor="transfer-token-address">Token Address</label>
-          <input
-            type="text"
-            id="transfer-to"
-            name="tokenAddress"
-            value={transferTokenId}
-            disabled
-          />
+          <p>Since current address group is {addressGroup}, only token from {addressGroup} can be withdrawn.</p>
+          <p>Only one token can be withdrawn at a time.</p>
+
+          <table>
+            <thead>
+              <tr>
+                <td>id</td>
+                <th>group</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                faucetContractIdByGroup && Object.keys(faucetContractIdByGroup).map((group, index) => {
+                  if (addressGroup === parseInt(group)) {
+                    return (
+                      <tr key={index} style={{ background: "red", color: "white" }}>
+                        <td>{faucetContractIdByGroup[`${group}`]}</td>
+                        <td>{group}</td>
+                      </tr>
+                    )
+                  } else {
+                    return (
+                      <tr key={index} style={{ color: "lightgrey" }}>
+                        <td>{faucetContractIdByGroup[`${group}`]}</td>
+                        <td>{group}</td>
+                      </tr>
+                    )
+                  }
+                })
+              }
+            </tbody>
+          </table>
           <label htmlFor="transfer-amount">Amount</label>
           <input
             type="number"

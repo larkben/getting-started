@@ -2,7 +2,7 @@ import { getAlephium } from "@alephium/get-extension-wallet"
 import { Script, SignTransferTxResult } from '@alephium/web3'
 import withDraw from '../../artifacts/withdraw.ral.json'
 
-export const transferToken = async (
+export const withdrawToken = async (
   amount: string,
   tokenId: string
 ): Promise<SignTransferTxResult> => {
@@ -23,3 +23,4 @@ export const transferToken = async (
     }
   )
 }
+

@@ -1,148 +1,71 @@
 import { FC, useEffect, useState } from "react"
-import Select from 'react-select';
-import { getAlephium } from '@alephium/get-extension-wallet'
-import {
-  networkId,
-} from "../services/wallet.service"
 import styles from "../styles/Home.module.css"
-import { SubscribeOptions, subscribeToTxStatus, TxStatusSubscription, TxStatus, web3, groupOfAddress } from "@alephium/web3"
+import { groupOfAddress, node } from "@alephium/web3"
 import { FaucetContractIdByGroup, getFaucetContractIdByGroup } from '../../configs/addresses'
-import { transferToken } from "@/services/token.service";
+import { withdrawToken } from "@/services/token.service";
+import { TxStatus, useTxStatus } from "./TxStatus"
 
-type Status = "idle" | "approve" | "pending" | "success" | "failure"
 
 export const TokenDapp: FC<{
-  address: string
-}> = ({ address }) => {
+  address: string,
+  network?: string
+}> = ({ address, network }) => {
   const addressGroup = groupOfAddress(address)
-  const [transferAmount, setTransferAmount] = useState("")
-  const [transferTokenId, setTransferTokenId] = useState("")
-  const [lastTransactionHash, setLastTransactionHash] = useState("")
-  const [transactionStatus, setTransactionStatus] = useState<Status>("idle")
-  const [transactionError, setTransactionError] = useState("")
-  const [alphBalance, setAlphBalance] = useState<{ balance: string, lockedBalance: string } | undefined>()
+  const [withdrawAmount, setWithdrawAmount] = useState("")
+  const [withdrawTokenId, setWithdrawTokenId] = useState("")
   const [faucetContractIdByGroup, setFaucetContractIdByGroup] = useState<FaucetContractIdByGroup>()
 
-  const alephium = getAlephium()
+  const [
+    ongoingTxId,
+    setOngoingTxId,
+    ongoingTxDescription,
+    setOngoingTxDescription,
+    txStatusCallback,
+    setTxStatusCallback,
+    resetTxStatus
+  ] = useTxStatus()
 
-  const buttonsDisabled = ["approve", "pending"].includes(transactionStatus)
 
+  const buttonsDisabled = !!ongoingTxId
+
+  console.log("ongoingTxId", ongoingTxId)
   useEffect(() => {
     const faucetContractIdByGroup = getFaucetContractIdByGroup()
     if (!!faucetContractIdByGroup) {
       setFaucetContractIdByGroup(faucetContractIdByGroup)
-      setTransferTokenId(faucetContractIdByGroup[`${addressGroup}`])
+      setWithdrawTokenId(faucetContractIdByGroup[`${addressGroup}`])
     }
   }, [])
 
-  useEffect(() => {
-    ; (async () => {
-      if (lastTransactionHash && transactionStatus === "pending") {
-        setTransactionError("")
+  const handleWithdrawSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const result = await withdrawToken(withdrawAmount, withdrawTokenId)
+    setOngoingTxId(result.txId)
+    setOngoingTxDescription("Withdraw faucet token")
 
-        if (alephium?.nodeProvider) {
-          let subscription: TxStatusSubscription | undefined = undefined
-          let txNotFoundRetryNums = 0
-          web3.setCurrentNodeProvider(alephium.nodeProvider)
-
-          const subscriptionOptions: SubscribeOptions<TxStatus> = {
-            pollingInterval: 3000,
-            messageCallback: async (status: TxStatus): Promise<void> => {
-              switch (status.type) {
-                case "Confirmed": {
-                  setTransactionStatus("success")
-
-                  subscription?.unsubscribe()
-                  break
-                }
-
-                case "TxNotFound": {
-                  if (txNotFoundRetryNums > 3) {
-                    setTransactionStatus("failure")
-                    setTransactionError(`Transaction ${lastTransactionHash} not found`)
-                    subscription?.unsubscribe()
-                  } else {
-                    await new Promise(r => setTimeout(r, 3000));
-                  }
-
-                  txNotFoundRetryNums += 1
-                  break
-                }
-
-                case "MemPooled": {
-                  console.log(`Transaction ${lastTransactionHash} is in mempool`)
-                  setTransactionStatus("pending")
-                  break
-                }
-              }
-            },
-            errorCallback: (error: any, subscription): Promise<void> => {
-              console.log(error)
-              setTransactionStatus("failure")
-              let message = error ? `${error}` : "No further details"
-              if (error?.response) {
-                message = JSON.stringify(error.response, null, 2)
-              }
-              setTransactionError(message)
-
-              subscription.unsubscribe()
-              return Promise.resolve()
-            }
-          }
-
-          subscription = subscribeToTxStatus(subscriptionOptions, lastTransactionHash)
+    let txNotFoundRetryNums = 0
+    setTxStatusCallback(() => async (status: node.TxStatus): Promise<void> => {
+      if (status.type === 'Confirmed') {
+        resetTxStatus()
+      } else if (status.type === 'TxNotFound') {
+        if (txNotFoundRetryNums > 3) {
+          resetTxStatus()
         } else {
-          throw Error("Alephium object is not initialized")
+          await new Promise(r => setTimeout(r, 3000));
         }
       }
-    })()
-  }, [transactionStatus, lastTransactionHash])
-
-  const handleTransferSubmit = async (e: React.FormEvent) => {
-    try {
-      e.preventDefault()
-      setTransactionStatus("approve")
-
-      const result = await transferToken(transferAmount, transferTokenId)
-      console.log(result)
-
-      setLastTransactionHash(result.txId)
-      setTransactionStatus("pending")
-    } catch (e) {
-      console.error(e)
-      setTransactionStatus("idle")
-    }
+    })
   }
 
   return (
     <>
-      <h3 style={{ margin: 0 }}>
-        Transaction status: <code>{transactionStatus}</code>
-      </h3>
-      {lastTransactionHash && (
-        <h3 style={{ margin: 0 }}>
-          Transaction hash:{" "}
-          <code>{lastTransactionHash}</code>
-        </h3>
-      )}
-      {transactionError && (
-        <h3 style={{ margin: 0 }}>
-          Transaction error:{" "}
-          <textarea
-            style={{ width: "100%", height: 100, background: "white" }}
-            value={transactionError}
-            readOnly
-          />
-        </h3>
-      )}
-
-      <h3 style={{ margin: 0 }}>
-        ALPH Balance: <code>{alphBalance?.balance && BigInt(alphBalance.balance)} ALPH</code>
-      </h3>
+      {
+        ongoingTxId ? <TxStatus txId={ongoingTxId} description={ongoingTxDescription} txStatusCallback={txStatusCallback} /> : undefined
+      }
 
       <div className="columns">
-        <form onSubmit={handleTransferSubmit}>
-          <h2 className={styles.title}>Alephium Token Faucet</h2>
+        <form onSubmit={handleWithdrawSubmit}>
+          <h2 className={styles.title}>Alephium Token Faucet on {network}</h2>
           <p>Since current address group is {addressGroup}, only token from {addressGroup} can be withdrawn.</p>
           <p>Only one token can be withdrawn at a time.</p>
 
@@ -159,14 +82,14 @@ export const TokenDapp: FC<{
                   if (addressGroup === parseInt(group)) {
                     return (
                       <tr key={index} style={{ background: "red", color: "white" }}>
-                        <td>{faucetContractIdByGroup[`${group}`]}</td>
+                        <td>{faucetContractIdByGroup[parseInt(group)]}</td>
                         <td>{group}</td>
                       </tr>
                     )
                   } else {
                     return (
                       <tr key={index} style={{ color: "lightgrey" }}>
-                        <td>{faucetContractIdByGroup[`${group}`]}</td>
+                        <td>{faucetContractIdByGroup[parseInt(group)]}</td>
                         <td>{group}</td>
                       </tr>
                     )
@@ -175,13 +98,15 @@ export const TokenDapp: FC<{
               }
             </tbody>
           </table>
-          <label htmlFor="transfer-amount">Amount</label>
+          <label htmlFor="withdraw-amount">Amount</label>
           <input
             type="number"
             id="transfer-amount"
             name="amount"
-            value={transferAmount}
-            onChange={(e) => setTransferAmount(e.target.value)}
+            max="10"
+            min="1"
+            value={withdrawAmount}
+            onChange={(e) => setWithdrawAmount(e.target.value)}
           />
           <br />
           <input type="submit" disabled={buttonsDisabled} value="Send Me Token" />

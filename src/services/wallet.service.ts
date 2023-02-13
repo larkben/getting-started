@@ -1,4 +1,4 @@
-import { connect, AlephiumWindowObject, getAlephium } from '@alephium/get-extension-wallet'
+import { connect } from '@alephium/get-extension-wallet'
 
 export const silentConnectWallet = async (
   onDisconnected: () => Promise<void>
@@ -24,6 +24,3 @@ export const connectWallet = async (
   return windowAlephium
 }
 
-export const networkId = (): string | undefined => {
-  return getAlephium()?.connectedNetworkId
-}

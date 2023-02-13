@@ -70,7 +70,7 @@ export const TokenDapp: FC<{
               <>
                 <h2 className={styles.title}>Alephium Token Faucet on {network}</h2>
                 <p>Since current address group is {addressGroup}, only token from {addressGroup} can be withdrawn.</p>
-                <p>Maximum 10 tokens can be withdrawn at a time.</p>
+                <p>Maximum 5 tokens can be withdrawn at a time.</p>
                 <table>
                   <thead>
                     <tr>

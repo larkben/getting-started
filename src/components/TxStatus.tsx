@@ -1,6 +1,6 @@
-import { getAlephium } from "@alephium/get-extension-wallet"
-import { node, SubscribeOptions, subscribeToTxStatus, TxStatusSubscription, web3 } from "@alephium/web3"
-import { useEffect, useState } from "react"
+import { getAlephium } from '@alephium/get-extension-wallet'
+import { node, SubscribeOptions, subscribeToTxStatus, TxStatusSubscription, web3 } from '@alephium/web3'
+import { useEffect, useState } from 'react'
 
 interface TxStatusAlertProps {
   txId: string
@@ -10,13 +10,13 @@ interface TxStatusAlertProps {
 
 export function useTxStatus() {
   const [ongoingTxId, setOngoingTxId] = useState<string | undefined>(undefined)
-  const [ongoingTxDescription, setOngoingTxDescription] = useState<string>("")
-  async function defaultTxStatusCallback(status: node.TxStatus) { }
+  const [ongoingTxDescription, setOngoingTxDescription] = useState<string>('')
+  async function defaultTxStatusCallback(status: node.TxStatus) {}
   const [txStatusCallback, setTxStatusCallback] = useState(() => defaultTxStatusCallback)
 
   function resetTxStatus() {
     setOngoingTxId(undefined)
-    setOngoingTxDescription("")
+    setOngoingTxDescription('')
     setTxStatusCallback(() => defaultTxStatusCallback)
   }
 
@@ -36,7 +36,7 @@ export const TxStatus = ({ txId, description, txStatusCallback }: TxStatusAlertP
   const [txStatus, setTxStatus] = useState<node.TxStatus | undefined>(undefined)
 
   if (!alephium?.nodeProvider) {
-    throw Error("Alephium object is not initialized")
+    throw Error('Alephium object is not initialized')
   }
 
   web3.setCurrentNodeProvider(alephium.nodeProvider)
@@ -46,7 +46,7 @@ export const TxStatus = ({ txId, description, txStatusCallback }: TxStatusAlertP
     messageCallback: async (status: node.TxStatus): Promise<void> => {
       setTxStatus(status)
       if (status.type === 'Confirmed' || status.type === 'TxNotFound') {
-        await new Promise(r => setTimeout(r, 5000));
+        await new Promise((r) => setTimeout(r, 5000))
       }
       await txStatusCallback(status)
     },
@@ -73,7 +73,7 @@ export const TxStatus = ({ txId, description, txStatusCallback }: TxStatusAlertP
   return (
     <>
       <h3 style={{ margin: 0 }}>
-        Transaction status ({description}): <code>{txStatus?.type || "unknown"}</code>
+        Transaction status ({description}): <code>{txStatus?.type || 'unknown'}</code>
       </h3>
       <h3 style={{ margin: 0 }}>
         Transaction hash: <code>{txId}</code>

@@ -12,7 +12,8 @@
     "compile": "npx --yes @alephium/cli@latest compile",
     "deploy": "npx --yes @alephium/cli@latest deploy",
     "lint": "next lint",
-    "test": "jest -i --config ./jest-config.json"
+    "test": "jest -i --config ./jest-config.json",
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
   },
   "prettier": {
     "bracketSameLine": false,

@@ -12,30 +12,25 @@ export default function Home() {
 
   useEffect(() => {
     const handler = async () => {
-      const wallet = await silentConnectWallet(
-        () => {
-          return Promise.resolve(setConnected(false))
-        }
-      )
+      const wallet = await silentConnectWallet(() => {
+        return Promise.resolve(setConnected(false))
+      })
       setAddress(wallet?.connectedAddress)
       setNetwork(wallet?.connectedNetworkId)
       setConnected(!!wallet?.connectedNetworkId)
     }
 
-      ; (async () => {
-        await handler()
-      })()
+    ;(async () => {
+      await handler()
+    })()
 
-    return () => {
-    }
+    return () => {}
   }, [])
 
   const handleConnectClick = async () => {
-    const wallet = await connectWallet(
-      () => {
-        return Promise.resolve(setConnected(false))
-      }
-    )
+    const wallet = await connectWallet(() => {
+      return Promise.resolve(setConnected(false))
+    })
     setAddress(wallet?.connectedAddress)
     setNetwork(wallet?.connectedNetworkId)
     setConnected(!!wallet?.connectedNetworkId)
@@ -50,14 +45,15 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {(isConnected && address) ? (
+      {isConnected && address ? (
         <>
           <h3 style={{ margin: 0 }}>
-            Wallet address: <code>{address} (Group {groupOfAddress(address)})</code>
+            Wallet address:{' '}
+            <code>
+              {address} (Group {groupOfAddress(address)})
+            </code>
           </h3>
-          {address && (
-            <TokenDapp address={address} network={network} />
-          )}
+          {address && <TokenDapp address={address} network={network} />}
         </>
       ) : (
         <>
@@ -67,7 +63,6 @@ export default function Home() {
           <p>First connect wallet to use dapp.</p>
         </>
       )}
-
     </div>
   )
 }

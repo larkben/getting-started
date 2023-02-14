@@ -11,18 +11,40 @@ faucet and expose it with a Web UI using Next.js.
 
 ## Getting Started
 
-First, deploy the token faucet contract:
+### Install
+
+```
+npm install
+```
+
+### Start a local devnet for testing and development
+
+```
+npx @alephium/cli@latest devnet start
+```
+
+### Deploy the token faucet contract
 
 ```bash
 # In this case devnet
 npx @alephium/cli deploy -n devnet
 ```
 
-This will deploy the token faucet contracts to all of the 4 groups on
-devnet.
+This will compile and deploy the token faucet contracts to all of the
+4 groups on devnet.
 
-After the token faucet contracts are deployed, run the development
-server:
+Before deployment, you might want to just compile and test the
+contracts first:
+
+```bash
+# Compile
+npx @alephium/cli compile
+
+# Test
+npx @alephium/cli test
+```
+
+### Run the development server
 
 ```bash
 npm run dev

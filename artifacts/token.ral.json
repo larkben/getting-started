@@ -4,39 +4,15 @@
   "bytecode": "050609121b4024402d404b010000000102a00002010000000102a00102010000000102a00202010000000102a00302010000000102a004020102010100111600130a320c7bb4b11600aba00416002ba10405b416005f",
   "codeHash": "9532edcdfbc7c771463c223e959be953efefec8bc1cbda905f45e5f6a11d970d",
   "fieldsSig": {
-    "names": [
-      "symbol",
-      "name",
-      "decimals",
-      "supply",
-      "balance"
-    ],
-    "types": [
-      "ByteVec",
-      "ByteVec",
-      "U256",
-      "U256",
-      "U256"
-    ],
-    "isMutable": [
-      false,
-      false,
-      false,
-      false,
-      true
-    ]
+    "names": ["symbol", "name", "decimals", "supply", "balance"],
+    "types": ["ByteVec", "ByteVec", "U256", "U256", "U256"],
+    "isMutable": [false, false, false, false, true]
   },
   "eventsSig": [
     {
       "name": "Withdraw",
-      "fieldNames": [
-        "to",
-        "amount"
-      ],
-      "fieldTypes": [
-        "Address",
-        "U256"
-      ]
+      "fieldNames": ["to", "amount"],
+      "fieldTypes": ["Address", "U256"]
     }
   ],
   "functions": [
@@ -48,9 +24,7 @@
       "paramNames": [],
       "paramTypes": [],
       "paramIsMutable": [],
-      "returnTypes": [
-        "ByteVec"
-      ]
+      "returnTypes": ["ByteVec"]
     },
     {
       "name": "getName",
@@ -60,9 +34,7 @@
       "paramNames": [],
       "paramTypes": [],
       "paramIsMutable": [],
-      "returnTypes": [
-        "ByteVec"
-      ]
+      "returnTypes": ["ByteVec"]
     },
     {
       "name": "getDecimals",
@@ -72,9 +44,7 @@
       "paramNames": [],
       "paramTypes": [],
       "paramIsMutable": [],
-      "returnTypes": [
-        "U256"
-      ]
+      "returnTypes": ["U256"]
     },
     {
       "name": "getTotalSupply",
@@ -84,9 +54,7 @@
       "paramNames": [],
       "paramTypes": [],
       "paramIsMutable": [],
-      "returnTypes": [
-        "U256"
-      ]
+      "returnTypes": ["U256"]
     },
     {
       "name": "balance",
@@ -96,24 +64,16 @@
       "paramNames": [],
       "paramTypes": [],
       "paramIsMutable": [],
-      "returnTypes": [
-        "U256"
-      ]
+      "returnTypes": ["U256"]
     },
     {
       "name": "withdraw",
       "usePreapprovedAssets": false,
       "useAssetsInContract": true,
       "isPublic": true,
-      "paramNames": [
-        "amount"
-      ],
-      "paramTypes": [
-        "U256"
-      ],
-      "paramIsMutable": [
-        false
-      ],
+      "paramNames": ["amount"],
+      "paramTypes": ["U256"],
+      "paramIsMutable": [false],
       "returnTypes": []
     }
   ]

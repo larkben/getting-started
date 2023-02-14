@@ -3,7 +3,7 @@ This is a Alephium template project for the
 following command:
 
 ```
-npx @alephium/cli init $project-name --template nextjs
+npx @alephium/cli init $project-name --template next
 ```
 
 This template project demonstrates how to implement a simple token

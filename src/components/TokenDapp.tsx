@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
-import { groupOfAddress, node } from '@alephium/web3'
+import { groupOfAddress } from '@alephium/web3'
 import { FaucetContractIdByGroup, getFaucetContractIdByGroup } from '../../configs/addresses'
 import { withdrawToken } from '@/services/token.service'
-import { TxStatus, useTxStatus } from './TxStatus'
+import { TxStatus } from './TxStatus'
 
 export const TokenDapp: FC<{
   address: string
@@ -13,20 +13,9 @@ export const TokenDapp: FC<{
   const [withdrawAmount, setWithdrawAmount] = useState('')
   const [withdrawTokenId, setWithdrawTokenId] = useState('')
   const [faucetContractIdByGroup, setFaucetContractIdByGroup] = useState<FaucetContractIdByGroup>()
-
-  const [
-    ongoingTxId,
-    setOngoingTxId,
-    ongoingTxDescription,
-    setOngoingTxDescription,
-    txStatusCallback,
-    setTxStatusCallback,
-    resetTxStatus
-  ] = useTxStatus()
-
+  const [ongoingTxId, setOngoingTxId] = useState<string>()
   const buttonsDisabled = !!ongoingTxId
 
-  console.log('ongoingTxId', ongoingTxId)
   useEffect(() => {
     const faucetContractIdByGroup = getFaucetContractIdByGroup()
     if (!!faucetContractIdByGroup) {
@@ -39,27 +28,11 @@ export const TokenDapp: FC<{
     e.preventDefault()
     const result = await withdrawToken(withdrawAmount, withdrawTokenId)
     setOngoingTxId(result.txId)
-    setOngoingTxDescription('Withdraw faucet token')
-
-    let txNotFoundRetryNums = 0
-    setTxStatusCallback(() => async (status: node.TxStatus): Promise<void> => {
-      if (status.type === 'Confirmed') {
-        resetTxStatus()
-      } else if (status.type === 'TxNotFound') {
-        if (txNotFoundRetryNums > 3) {
-          resetTxStatus()
-        } else {
-          await new Promise((r) => setTimeout(r, 3000))
-        }
-      }
-    })
   }
 
   return (
     <>
-      {ongoingTxId ? (
-        <TxStatus txId={ongoingTxId} description={ongoingTxDescription} txStatusCallback={txStatusCallback} />
-      ) : undefined}
+      {ongoingTxId && <TxStatus txId={ongoingTxId} />}
 
       <div className="columns">
         <form onSubmit={handleWithdrawSubmit}>

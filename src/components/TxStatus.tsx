@@ -1,83 +1,34 @@
-import { getAlephium } from '@alephium/get-extension-wallet'
-import { node, SubscribeOptions, subscribeToTxStatus, TxStatusSubscription, web3 } from '@alephium/web3'
-import { useEffect, useState } from 'react'
+import { useTxStatus } from '@alephium/web3-react'
+import { useState } from 'react'
 
 interface TxStatusAlertProps {
   txId: string
-  description: string
-  txStatusCallback(status: node.TxStatus): Promise<any>
 }
 
-export function useTxStatus() {
-  const [ongoingTxId, setOngoingTxId] = useState<string | undefined>(undefined)
-  const [ongoingTxDescription, setOngoingTxDescription] = useState<string>('')
-  async function defaultTxStatusCallback(status: node.TxStatus) {}
-  const [txStatusCallback, setTxStatusCallback] = useState(() => defaultTxStatusCallback)
+export const TxStatus = ({ txId }: TxStatusAlertProps) => {
+  const [show, setShow] = useState(true)
 
-  function resetTxStatus() {
-    setOngoingTxId(undefined)
-    setOngoingTxDescription('')
-    setTxStatusCallback(() => defaultTxStatusCallback)
-  }
+  let numberOfChecks = 0
+  const { txStatus } = useTxStatus(txId, (status) => {
+    numberOfChecks = numberOfChecks + 1
 
-  return [
-    ongoingTxId,
-    setOngoingTxId,
-    ongoingTxDescription,
-    setOngoingTxDescription,
-    txStatusCallback,
-    setTxStatusCallback,
-    resetTxStatus
-  ] as const
-}
-
-export const TxStatus = ({ txId, description, txStatusCallback }: TxStatusAlertProps) => {
-  const alephium = getAlephium()
-  const [txStatus, setTxStatus] = useState<node.TxStatus | undefined>(undefined)
-
-  if (!alephium?.nodeProvider) {
-    throw Error('Alephium object is not initialized')
-  }
-
-  web3.setCurrentNodeProvider(alephium.nodeProvider)
-
-  const subscriptionOptions: SubscribeOptions<node.TxStatus> = {
-    pollingInterval: 3000,
-    messageCallback: async (status: node.TxStatus): Promise<void> => {
-      setTxStatus(status)
-      if (status.type === 'Confirmed' || status.type === 'TxNotFound') {
-        await new Promise((r) => setTimeout(r, 5000))
-      }
-      await txStatusCallback(status)
-    },
-    errorCallback: (error: any, subscription): Promise<void> => {
-      console.error(error)
-      subscription.unsubscribe()
-      return Promise.resolve()
-    }
-  }
-
-  useEffect(() => {
-    var subscription: TxStatusSubscription | undefined = undefined
-    if (subscriptionOptions) {
-      subscription = subscribeToTxStatus(subscriptionOptions, txId)
+    if ((status.type === 'Confirmed' && numberOfChecks > 2) || (status.type === 'TxNotFound' && numberOfChecks > 3)) {
+      setShow(false)
     }
 
-    return () => {
-      if (subscription) {
-        subscription.unsubscribe()
-      }
-    }
+    return Promise.resolve()
   })
 
-  return (
+  return show ? (
     <>
       <h3 style={{ margin: 0 }}>
-        Transaction status ({description}): <code>{txStatus?.type || 'unknown'}</code>
+        Transaction status: <code>{txStatus?.type || 'unknown'}</code>
       </h3>
       <h3 style={{ margin: 0 }}>
         Transaction hash: <code>{txId}</code>
       </h3>
     </>
+  ) : (
+    <></>
   )
 }

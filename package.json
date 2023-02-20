@@ -1,5 +1,5 @@
 {
-  "name": "my-dapp-template",
+  "name": "alephium-nextjs-template",
   "version": "0.1.0",
   "license": "GPL",
   "scripts": {
@@ -29,7 +29,7 @@
     "@alephium/get-extension-wallet": "^0.5.0-rc.7",
     "@alephium/sdk": "0.4.0",
     "@alephium/web3": "0.4.0",
-    "@alephium/web3-react": "v0.0.1-rc.3",
+    "@alephium/web3-react": "0.0.2",
     "@next/font": "13.1.4",
     "detect-browser": "^5.3.0",
     "eslint-config-next": "13.1.4",

@@ -17,9 +17,9 @@
     },
     "TokenFaucet": {
       "sourceFile": "token.ral",
-      "sourceCodeHash": "640d9c0c803d4d0a665877c2ec26eac1ca0bfd27b3b4721a84d649f69832cd98",
-      "bytecodeDebugPatch": "=20-2+68=101+3a0047e02=1+75468652063757272656e742062616c616e63652069732000=48",
-      "codeHashDebug": "ee9ddb86620edc0992fe3e4c258a301288f8d2ca2d6de8e38d29ea7e75e726d3",
+      "sourceCodeHash": "3be7b636dd3f32272874af49ae42fae19b9055982318b240c7312c92e952d65c",
+      "bytecodeDebugPatch": "=20-2+67=101+3a0007e02=1+75468652063757272656e742062616c616e63652069732000=46",
+      "codeHashDebug": "142f8d7201aa0279723529eb7b15f247c0e41a71d1f58d7bdbefa5264d16a7a8",
       "warnings": []
     },
     "Withdraw": {

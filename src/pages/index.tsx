@@ -1,12 +1,12 @@
 import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 import { TokenDapp } from '@/components/TokenDapp'
-import { AlephiumConnectButton, useAddress } from '@alephium/web3-react'
+import { AlephiumConnectButton, useAccount } from '@alephium/web3-react'
 
 import { NETWORK } from 'configs/addresses'
 
 export default function Home() {
-  const { address, isConnected } = useAddress(NETWORK)
+  const { account } = useAccount(NETWORK)
 
   return (
     <>
@@ -19,9 +19,9 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        {isConnected && (
+        {!!account && (
           <>
-            <TokenDapp address={address} network={NETWORK} />
+            <TokenDapp address={account.address} network={NETWORK} />
           </>
         )}
       </div>

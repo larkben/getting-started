@@ -1,16 +1,8 @@
-import { getAlephium } from '@alephium/get-extension-wallet'
-import { Script, SignTransferTxResult } from '@alephium/web3'
-import withDraw from '../../artifacts/withdraw.ral.json'
+import { ExecuteScriptResult, SignerProvider } from '@alephium/web3'
+import { Withdraw } from '../../artifacts/ts/scripts'
 
-export const withdrawToken = async (amount: string, tokenId: string): Promise<SignTransferTxResult> => {
-  const alephium = getAlephium()
-  if (!alephium.connectedAddress || !alephium.connectedNetworkId) {
-    throw Error('alephium object not initialized')
-  }
-
-  const script = Script.fromJson(withDraw)
-
-  return await script.execute(alephium, {
+export const withdrawToken = async (signerProvider: SignerProvider, amount: string, tokenId: string): Promise<ExecuteScriptResult> => {
+  return await Withdraw.execute(signerProvider, {
     initialFields: {
       token: tokenId,
       amount: BigInt(amount)

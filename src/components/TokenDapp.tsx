@@ -4,11 +4,13 @@ import { groupOfAddress } from '@alephium/web3'
 import { FaucetContractIdByGroup, getFaucetContractIdByGroup } from '../../configs/addresses'
 import { withdrawToken } from '@/services/token.service'
 import { TxStatus } from './TxStatus'
+import { useContext } from '@alephium/web3-react'
 
 export const TokenDapp: FC<{
   address: string
   network?: string
 }> = ({ address, network }) => {
+  const context = useContext()
   const addressGroup = groupOfAddress(address)
   const [withdrawAmount, setWithdrawAmount] = useState('')
   const [withdrawTokenId, setWithdrawTokenId] = useState('')
@@ -26,8 +28,10 @@ export const TokenDapp: FC<{
 
   const handleWithdrawSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const result = await withdrawToken(withdrawAmount, withdrawTokenId)
-    setOngoingTxId(result.txId)
+    if (!!context.signerProvider) {
+      const result = await withdrawToken(context.signerProvider, withdrawAmount, withdrawTokenId)
+      setOngoingTxId(result.txId)
+    }
   }
 
   return (
@@ -42,7 +46,7 @@ export const TokenDapp: FC<{
               <p>
                 Since current address group is {addressGroup}, only token from {addressGroup} can be withdrawn.
               </p>
-              <p>Maximum 5 tokens can be withdrawn at a time.</p>
+              <p>Maximum 2 tokens can be withdrawn at a time.</p>
               <table>
                 <thead>
                   <tr>
@@ -75,7 +79,7 @@ export const TokenDapp: FC<{
                 type="number"
                 id="transfer-amount"
                 name="amount"
-                max="10"
+                max="2"
                 min="1"
                 value={withdrawAmount}
                 onChange={(e) => setWithdrawAmount(e.target.value)}

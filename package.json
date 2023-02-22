@@ -4,7 +4,11 @@
   "license": "GPL",
   "scripts": {
     "dev": "next dev",
+    "start": "next start",
     "build": "next build",
+    "devnet:build": "npm run build",
+    "testnet:build": "NEXT_PUBLIC_NETWORK=testnet next build",
+    "mainnet:build": "NEXT_PUBLIC_NETWORK=mainnet next build",
     "export": "next export",
     "clean:unix": "node -e \"if (process.platform !== 'win32') process.exit(1)\" || rm -rf dist",
     "clean:windows": "node -e \"if (process.platform === 'win32') process.exit(1)\" || , if exist dist rmdir /Q /S dist",
@@ -12,6 +16,9 @@
     "devnet:stop": "npx --yes @alephium/cli@latest devnet stop",
     "compile": "npx --yes @alephium/cli@latest compile",
     "deploy": "npx --yes @alephium/cli@latest deploy",
+    "devnet:deploy": "npm run deploy",
+    "testnet:deploy": "npx --yes @alephium/cli@latest deploy -n testnet",
+    "mainnet:deploy": "npx --yes @alephium/cli@latest deploy -n mainnet",
     "lint": "next lint",
     "test": "jest -i --config ./jest-config.json",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""

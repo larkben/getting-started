@@ -27,11 +27,11 @@
   },
   "dependencies": {
     "@alephium/cli": "v0.5.0-rc.14",
-    "@alephium/get-extension-wallet": "^0.5.0-rc.9",
+    "@alephium/get-extension-wallet": "0.5.0-rc.10",
     "@alephium/sdk": "0.4.0",
     "@alephium/web3": "v0.5.0-rc.14",
     "@alephium/web3-test": "v0.5.0-rc.14",
-    "@alephium/web3-react": "v0.0.3-rc.1",
+    "@alephium/web3-react": "0.0.3-rc.2",
     "@next/font": "13.1.4",
     "detect-browser": "^5.3.0",
     "eslint-config-next": "13.1.4",

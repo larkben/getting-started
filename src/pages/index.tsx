@@ -6,7 +6,7 @@ import { AlephiumConnectButton, useAccount } from '@alephium/web3-react'
 import { NETWORK } from 'configs/addresses'
 
 export default function Home() {
-  const { account } = useAccount(NETWORK)
+  const { account } = useAccount()
 
   return (
     <>

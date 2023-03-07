@@ -5,6 +5,7 @@ import { FaucetContractIdByGroup, getFaucetContractIdByGroup } from '../../confi
 import { withdrawToken } from '@/services/token.service'
 import { TxStatus } from './TxStatus'
 import { useContext } from '@alephium/web3-react'
+import { node } from "@alephium/web3"
 
 export const TokenDapp: FC<{
   address: string
@@ -16,7 +17,6 @@ export const TokenDapp: FC<{
   const [withdrawTokenId, setWithdrawTokenId] = useState('')
   const [faucetContractIdByGroup, setFaucetContractIdByGroup] = useState<FaucetContractIdByGroup>()
   const [ongoingTxId, setOngoingTxId] = useState<string>()
-  const buttonsDisabled = !!ongoingTxId
 
   useEffect(() => {
     const faucetContractIdByGroup = getFaucetContractIdByGroup()
@@ -34,9 +34,21 @@ export const TokenDapp: FC<{
     }
   }
 
+  const txStatusCallback = (status: node.TxStatus, numberOfChecks: number): Promise<any> => {
+    if (
+      (status.type === 'Confirmed' && numberOfChecks > 2) ||
+      (status.type === 'TxNotFound' && numberOfChecks > 3)
+    ) {
+      setOngoingTxId(undefined)
+    }
+
+    Promise.resolve()
+  }
+
+  console.log("ongoing..", ongoingTxId)
   return (
     <>
-      {ongoingTxId && <TxStatus txId={ongoingTxId} />}
+      {ongoingTxId && <TxStatus txId={ongoingTxId} txStatusCallback={txStatusCallback} />}
 
       <div className="columns">
         <form onSubmit={handleWithdrawSubmit}>
@@ -85,7 +97,7 @@ export const TokenDapp: FC<{
                 onChange={(e) => setWithdrawAmount(e.target.value)}
               />
               <br />
-              <input type="submit" disabled={buttonsDisabled} value="Send Me Token" />
+              <input type="submit" disabled={!!ongoingTxId} value="Send Me Token" />
             </>
           ) : (
             <>

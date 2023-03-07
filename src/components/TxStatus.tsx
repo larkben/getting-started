@@ -1,25 +1,19 @@
 import { useTxStatus } from '@alephium/web3-react'
-import { useState } from 'react'
+import { node } from "@alephium/web3"
 
 interface TxStatusAlertProps {
   txId: string
+  txStatusCallback(status: node.TxStatus, numberOfChecks: number): Promise<any>
 }
 
-export const TxStatus = ({ txId }: TxStatusAlertProps) => {
-  const [show, setShow] = useState(true)
-
+export const TxStatus = ({ txId, txStatusCallback }: TxStatusAlertProps) => {
   let numberOfChecks = 0
   const { txStatus } = useTxStatus(txId, (status) => {
     numberOfChecks = numberOfChecks + 1
-
-    if ((status.type === 'Confirmed' && numberOfChecks > 2) || (status.type === 'TxNotFound' && numberOfChecks > 3)) {
-      setShow(false)
-    }
-
-    return Promise.resolve()
+    return txStatusCallback(status, numberOfChecks)
   })
 
-  return show ? (
+  return (
     <>
       <h3 style={{ margin: 0 }}>
         Transaction status: <code>{txStatus?.type || 'unknown'}</code>
@@ -28,7 +22,5 @@ export const TxStatus = ({ txId }: TxStatusAlertProps) => {
         Transaction hash: <code>{txId}</code>
       </h3>
     </>
-  ) : (
-    <></>
   )
 }

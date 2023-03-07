@@ -12,9 +12,9 @@ export function getFaucetContractIdByGroup(): FaucetContractIdByGroup {
   const deploymentFile: any = NETWORK === 'mainnet' ? mainnet : NETWORK === 'testnet' ? testnet : devnet
 
   const contractIdByGroup: FaucetContractIdByGroup = {}
-  Object.keys(deploymentFile).forEach((key) => {
-    contractIdByGroup[parseInt(key)] = deploymentFile[key]?.deployContractResults.TokenFaucet.contractId
-  })
+  for (let group = 0; group < deploymentFile.length; group++) {
+    contractIdByGroup[group] = deploymentFile[group].contracts.TokenFaucet.contractId
+  }
 
   return contractIdByGroup
 }

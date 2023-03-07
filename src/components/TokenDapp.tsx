@@ -42,7 +42,7 @@ export const TokenDapp: FC<{
       setOngoingTxId(undefined)
     }
 
-    Promise.resolve()
+    return Promise.resolve()
   }
 
   console.log("ongoing..", ongoingTxId)

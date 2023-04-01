@@ -24,7 +24,7 @@ export const TokenDapp: FC<{
       setFaucetContractIdByGroup(faucetContractIdByGroup)
       setWithdrawTokenId(faucetContractIdByGroup[`${addressGroup}`])
     }
-  }, [])
+  }, [addressGroup])
 
   const handleWithdrawSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

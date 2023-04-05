@@ -8,12 +8,11 @@ export type Settings = {
 const defaultSettings: Settings = { issueTokenAmount: 100n }
 
 const configuration: Configuration<Settings> = {
-  defaultNetwork: 'devnet',
   networks: {
     devnet: {
       nodeUrl: 'http://localhost:22973',
       privateKeys: [
-        'bd7dd0c4abd3cf8ba2d169c8320a2cc8bc8ab583b0db9a32d4352d6f5b15d037',
+        'a642942e67258589cd2b1822c631506632db5a12aabcf413604e785300d762a5', // group 0
       ],
       settings: defaultSettings
     },

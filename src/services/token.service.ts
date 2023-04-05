@@ -1,4 +1,4 @@
-import { ExecuteScriptResult, SignerProvider } from '@alephium/web3'
+import { DUST_AMOUNT, ExecuteScriptResult, SignerProvider } from '@alephium/web3'
 import { Withdraw } from '../../artifacts/ts/scripts'
 
 export const withdrawToken = async (signerProvider: SignerProvider, amount: string, tokenId: string): Promise<ExecuteScriptResult> => {
@@ -6,6 +6,7 @@ export const withdrawToken = async (signerProvider: SignerProvider, amount: stri
     initialFields: {
       token: tokenId,
       amount: BigInt(amount)
-    }
+    },
+    attoAlphAmount: DUST_AMOUNT,
   })
 }

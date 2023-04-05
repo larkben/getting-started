@@ -2,6 +2,7 @@ import { web3, Project, TestContractParams, addressFromContractId, AssetOutput, 
 import { expectAssertionError, randomContractId, testAddress, testNodeWallet } from '@alephium/web3-test'
 import { deployToDevnet } from '@alephium/cli'
 import { TokenFaucet, TokenFaucetTypes, Withdraw } from '../artifacts/ts'
+import { loadDeployments } from '../artifacts/ts/deployments'
 
 describe('unit tests', () => {
   let testContractId: string
@@ -111,15 +112,15 @@ describe('integration tests', () => {
     const signer = await testNodeWallet()
     const deployments = await deployToDevnet()
 
-    const testAddress = '15jjExDyS8q3Wqk9v29PCQ21jDqubDrD8WQdgn6VW2oi4' // hardcoded test address
+    const testAddress = 'a642942e67258589cd2b1822c631506632db5a12aabcf413604e785300d762a5' // hardcoded test address
     await signer.setSelectedAccount(testAddress)
     const account = await signer.getSelectedAccount()!
     const testGroup = account.group
 
     // The contract is deployed to all groups
-    const deployed = deployments.getDeployedContractResult(testGroup, 'TokenFaucet')!
+    const deployed = loadDeployments('devnet').contracts.TokenFaucet.contractInstance
     const tokenId = deployed.contractId
-    const tokenAddress = deployed.contractAddress
+    const tokenAddress = deployed.address
     expect(deployed.groupIndex).toEqual(testGroup)
 
     const faucet = TokenFaucet.at(tokenAddress)

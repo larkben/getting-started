@@ -5,11 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "start": "next start",
+    "export": "next export",
     "build": "npm run devnet:build",
     "devnet:build": "NEXT_PUBLIC_NETWORK=devnet next build",
     "testnet:build": "NEXT_PUBLIC_NETWORK=testnet next build",
     "mainnet:build": "NEXT_PUBLIC_NETWORK=mainnet next build",
-    "export": "next export",
     "compile": "npx --yes @alephium/cli@latest compile",
     "deploy": "npm run devnet:deploy",
     "devnet:deploy": "npx --yes @alephium/cli@latest deploy -n devnet",

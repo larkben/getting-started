@@ -1,4 +1,4 @@
-import { web3, Project, TestContractParams, addressFromContractId, AssetOutput, DUST_AMOUNT, addressFromPublicKey, publicKeyFromPrivateKey } from '@alephium/web3'
+import { web3, Project, TestContractParams, addressFromContractId, AssetOutput, DUST_AMOUNT } from '@alephium/web3'
 import { expectAssertionError, randomContractId, testAddress, testNodeWallet } from '@alephium/web3-test'
 import { deployToDevnet } from '@alephium/cli'
 import { TokenFaucet, TokenFaucetTypes, Withdraw } from '../artifacts/ts'
@@ -112,7 +112,7 @@ describe('integration tests', () => {
     const signer = await testNodeWallet()
     const deployments = await deployToDevnet()
 
-    const testAddress = 'a642942e67258589cd2b1822c631506632db5a12aabcf413604e785300d762a5' // hardcoded test address
+    const testAddress = '1DrDyTr9RpRsQnDnXo2YRiPzPW4ooHX5LLoqXrqfMrpQH' // hardcoded test address
     await signer.setSelectedAccount(testAddress)
     const account = await signer.getSelectedAccount()!
     const testGroup = account.group

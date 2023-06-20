@@ -64,7 +64,7 @@ To learn more about smart contract development on Alephium, take a
 look at the following resources:
 
 - [Alephium Web3 SDK Guide](https://docs.alephium.org/dapps/alephium-web3/) - Learn about Alephium Web3 SDK
-- [Ralph Language](https://nextjs.org/learn) - A guide to the Ralph programming language
+- [Ralph Language](https://docs.alephium.org/ralph/getting-started) - A guide to the Ralph programming language
 
 You can check out the [Alephium GitHub
 repositories](https://github.com/alephium) for more information - your

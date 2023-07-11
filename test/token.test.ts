@@ -2,7 +2,6 @@ import { web3, Project, TestContractParams, addressFromContractId, AssetOutput, 
 import { expectAssertionError, randomContractId, testAddress, testNodeWallet } from '@alephium/web3-test'
 import { deployToDevnet } from '@alephium/cli'
 import { TokenFaucet, TokenFaucetTypes, Withdraw } from '../artifacts/ts'
-import { loadDeployments } from '../artifacts/ts/deployments'
 
 describe('unit tests', () => {
   let testContractId: string
@@ -12,7 +11,7 @@ describe('unit tests', () => {
 
   // We initialize the fixture variables before all tests
   beforeAll(async () => {
-    web3.setCurrentNodeProvider('http://127.0.0.1:22973')
+    web3.setCurrentNodeProvider('http://127.0.0.1:22973', undefined, fetch)
     await Project.build()
     testContractId = randomContractId()
     testTokenId = testContractId
@@ -104,7 +103,7 @@ describe('unit tests', () => {
 
 describe('integration tests', () => {
   beforeAll(async () => {
-    web3.setCurrentNodeProvider('http://127.0.0.1:22973')
+    web3.setCurrentNodeProvider('http://127.0.0.1:22973', undefined, fetch)
     await Project.build()
   })
 
@@ -112,31 +111,36 @@ describe('integration tests', () => {
     const signer = await testNodeWallet()
     const deployments = await deployToDevnet()
 
-    const testAddress = '1DrDyTr9RpRsQnDnXo2YRiPzPW4ooHX5LLoqXrqfMrpQH' // hardcoded test address
-    await signer.setSelectedAccount(testAddress)
-    const account = await signer.getSelectedAccount()!
-    const testGroup = account.group
+    // Test with all of the addresses of the wallet
+    for (const account of await signer.getAccounts()) {
+      const testAddress = account.address
+      await signer.setSelectedAccount(testAddress)
+      const testGroup = account.group
 
-    // The contract is deployed to all groups
-    const deployed = loadDeployments('devnet').contracts.TokenFaucet.contractInstance
-    const tokenId = deployed.contractId
-    const tokenAddress = deployed.address
-    expect(deployed.groupIndex).toEqual(testGroup)
+      const deployed = deployments.getDeployedContractResult(testGroup, 'TokenFaucet')
+      if (deployed === undefined) {
+        console.log(`The contract is not deployed on group ${account.group}`)
+        continue
+      }
+      const tokenId = deployed.contractInstance.contractId
+      const tokenAddress = deployed.contractInstance.address
+      expect(deployed.contractInstance.groupIndex).toEqual(testGroup)
 
-    const faucet = TokenFaucet.at(tokenAddress)
-    const initialState = await faucet.fetchState()
-    const initialBalance = initialState.fields.balance
+      const faucet = TokenFaucet.at(tokenAddress)
+      const initialState = await faucet.fetchState()
+      const initialBalance = initialState.fields.balance
 
-    // Call `withdraw` function 10 times
-    for (let i = 0; i < 10; i++) {
-      await Withdraw.execute(signer, {
-        initialFields: { token: tokenId, amount: 1n },
-        attoAlphAmount: DUST_AMOUNT
-      })
+      // Call `withdraw` function 10 times
+      for (let i = 0; i < 10; i++) {
+        await Withdraw.execute(signer, {
+          initialFields: { token: tokenId, amount: 1n },
+          attoAlphAmount: DUST_AMOUNT * 2n
+        })
 
-      const newState = await faucet.fetchState()
-      const newBalance = newState.fields.balance
-      expect(newBalance).toEqual(initialBalance - BigInt(i) - 1n)
+        const newState = await faucet.fetchState()
+        const newBalance = newState.fields.balance
+        expect(newBalance).toEqual(initialBalance - BigInt(i) - 1n)
+      }
     }
   }, 20000)
 })

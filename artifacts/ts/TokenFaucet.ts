@@ -24,7 +24,8 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as TokenFaucetContractJson } from "../token.ral.json";
+import { default as TokenFaucetContractJson } from "../TokenFaucet.ral.json";
+import { getContractByCodeHash } from "./contracts";
 
 // Custom types for the contract
 export namespace TokenFaucetTypes {
@@ -38,7 +39,7 @@ export namespace TokenFaucetTypes {
 
   export type State = ContractState<Fields>;
 
-  export type WithdrawEvent = ContractEvent<{ to: HexString; amount: bigint }>;
+  export type WithdrawEvent = ContractEvent<{ to: Address; amount: bigint }>;
 
   export interface CallMethodTable {
     getSymbol: {
@@ -80,6 +81,8 @@ class Factory extends ContractFactory<
   TokenFaucetInstance,
   TokenFaucetTypes.Fields
 > {
+  consts = { ErrorCodes: { InvalidWithdrawAmount: BigInt(0) } };
+
   at(address: string): TokenFaucetInstance {
     return new TokenFaucetInstance(address);
   }
@@ -177,7 +180,8 @@ export class TokenFaucetInstance extends ContractInstance {
         TokenFaucet,
         this,
         "getSymbol",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getName: async (
@@ -187,7 +191,8 @@ export class TokenFaucetInstance extends ContractInstance {
         TokenFaucet,
         this,
         "getName",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getDecimals: async (
@@ -197,7 +202,8 @@ export class TokenFaucetInstance extends ContractInstance {
         TokenFaucet,
         this,
         "getDecimals",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getTotalSupply: async (
@@ -207,7 +213,8 @@ export class TokenFaucetInstance extends ContractInstance {
         TokenFaucet,
         this,
         "getTotalSupply",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     balance: async (
@@ -217,7 +224,8 @@ export class TokenFaucetInstance extends ContractInstance {
         TokenFaucet,
         this,
         "balance",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
   };
@@ -228,7 +236,8 @@ export class TokenFaucetInstance extends ContractInstance {
     return (await multicallMethods(
       TokenFaucet,
       this,
-      calls
+      calls,
+      getContractByCodeHash
     )) as TokenFaucetTypes.MultiCallResults<Calls>;
   }
 }

@@ -3,22 +3,17 @@
 /* eslint-disable */
 
 import {
+  Address,
+  ExecutableScript,
   ExecuteScriptParams,
   ExecuteScriptResult,
   Script,
   SignerProvider,
   HexString,
 } from "@alephium/web3";
-import { default as WithdrawScriptJson } from "../withdraw.ral.json";
+import { default as WithdrawScriptJson } from "../Withdraw.ral.json";
 
-export namespace Withdraw {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{ token: HexString; amount: bigint }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(WithdrawScriptJson);
-}
+export const Withdraw = new ExecutableScript<{
+  token: HexString;
+  amount: bigint;
+}>(Script.fromJson(WithdrawScriptJson));

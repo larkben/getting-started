@@ -4,7 +4,7 @@
 
 import { RunScriptResult, DeployContractExecutionResult } from "@alephium/cli";
 import { NetworkId } from "@alephium/web3";
-import { TokenFaucetInstance } from ".";
+import { TokenFaucet, TokenFaucetInstance } from ".";
 import { default as testnetDeployments } from "../.deployments.testnet.json";
 import { default as devnetDeployments } from "../.deployments.devnet.json";
 
@@ -14,6 +14,21 @@ export type Deployments = {
     TokenFaucet: DeployContractExecutionResult<TokenFaucetInstance>;
   };
 };
+
+function toDeployments(json: any): Deployments {
+  const contracts = {
+    TokenFaucet: {
+      ...json.contracts.TokenFaucet,
+      contractInstance: TokenFaucet.at(
+        json.contracts.TokenFaucet.contractInstance.address
+      ),
+    },
+  };
+  return {
+    ...json,
+    contracts: contracts as Deployments["contracts"],
+  };
+}
 
 export function loadDeployments(
   networkId: NetworkId,
@@ -39,7 +54,7 @@ export function loadDeployments(
           ", please specify the deployer address"
       );
     } else {
-      return allDeployments[0];
+      return toDeployments(allDeployments[0]);
     }
   }
   const result = allDeployments.find(
@@ -48,5 +63,5 @@ export function loadDeployments(
   if (result === undefined) {
     throw Error("The contract deployment result does not exist");
   }
-  return result;
+  return toDeployments(result);
 }

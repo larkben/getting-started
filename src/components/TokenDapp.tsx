@@ -1,3 +1,4 @@
+import React from 'react'
 import { FC, useState } from 'react'
 import styles from '../styles/Home.module.css'
 import { withdrawToken } from '@/services/token.service'
@@ -16,7 +17,7 @@ export const TokenDapp: FC<{
 
   const handleWithdrawSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!!context.signerProvider) {
+    if (context.signerProvider) {
       const result = await withdrawToken(context.signerProvider, withdrawAmount, config.faucetTokenId)
       setOngoingTxId(result.txId)
     }

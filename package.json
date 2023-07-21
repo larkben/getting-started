@@ -16,6 +16,7 @@
     "testnet:deploy": "npx --yes @alephium/cli@latest deploy -n testnet",
     "mainnet:deploy": "npx --yes @alephium/cli@latest deploy -n mainnet",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "test": "jest -i --config ./jest-config.json",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
   },

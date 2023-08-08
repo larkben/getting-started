@@ -9,7 +9,7 @@ import {
   TestContractResult,
   HexString,
   ContractFactory,
-  SubscribeOptions,
+  EventSubscribeOptions,
   EventSubscription,
   CallContractParams,
   CallContractResult,
@@ -81,6 +81,7 @@ class Factory extends ContractFactory<
   TokenFaucetInstance,
   TokenFaucetTypes.Fields
 > {
+  eventIndex = { Withdraw: 0 };
   consts = { ErrorCodes: { InvalidWithdrawAmount: BigInt(0) } };
 
   at(address: string): TokenFaucetInstance {
@@ -160,7 +161,7 @@ export class TokenFaucetInstance extends ContractInstance {
   }
 
   subscribeWithdrawEvent(
-    options: SubscribeOptions<TokenFaucetTypes.WithdrawEvent>,
+    options: EventSubscribeOptions<TokenFaucetTypes.WithdrawEvent>,
     fromCount?: number
   ): EventSubscription {
     return subscribeContractEvent(

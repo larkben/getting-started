@@ -18,9 +18,9 @@ export type Deployments = {
 function toDeployments(json: any): Deployments {
   const contracts = {
     TokenFaucet: {
-      ...json.contracts.TokenFaucet,
+      ...json.contracts["TokenFaucet"],
       contractInstance: TokenFaucet.at(
-        json.contracts.TokenFaucet.contractInstance.address
+        json.contracts["TokenFaucet"].contractInstance.address
       ),
     },
   };

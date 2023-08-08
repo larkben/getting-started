@@ -6,7 +6,7 @@ import { AlephiumConnectButton, useAccount } from '@alephium/web3-react'
 import { tokenFaucetConfig } from '@/services/utils'
 
 export default function Home() {
-  const { account } = useAccount()
+  const account = useAccount()
 
   return (
     <>

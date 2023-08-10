@@ -2,11 +2,11 @@ import React from 'react'
 import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 import { TokenDapp } from '@/components/TokenDapp'
-import { AlephiumConnectButton, useAccount } from '@alephium/web3-react'
+import { AlephiumConnectButton, useWallet } from '@alephium/web3-react'
 import { tokenFaucetConfig } from '@/services/utils'
 
 export default function Home() {
-  const account = useAccount()
+  const wallet = useWallet()
 
   return (
     <>
@@ -19,7 +19,7 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        {!!account && (
+        {!!wallet && (
           <TokenDapp config={tokenFaucetConfig} />
         )}
       </div>

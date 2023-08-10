@@ -3,22 +3,22 @@ import { FC, useState } from 'react'
 import styles from '../styles/Home.module.css'
 import { withdrawToken } from '@/services/token.service'
 import { TxStatus } from './TxStatus'
-import { useAlephiumConnectContext } from '@alephium/web3-react'
+import { useWallet } from '@alephium/web3-react'
 import { node } from "@alephium/web3"
 import { TokenFaucetConfig } from '@/services/utils'
 
 export const TokenDapp: FC<{
   config: TokenFaucetConfig
 }> = ({ config }) => {
-  const context = useAlephiumConnectContext()
+  const wallet = useWallet()
   const addressGroup = config.groupIndex
   const [withdrawAmount, setWithdrawAmount] = useState('')
   const [ongoingTxId, setOngoingTxId] = useState<string>()
 
   const handleWithdrawSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (context.signerProvider) {
-      const result = await withdrawToken(context.signerProvider, withdrawAmount, config.faucetTokenId)
+    if (wallet?.signer) {
+      const result = await withdrawToken(wallet.signer, withdrawAmount, config.faucetTokenId)
       setOngoingTxId(result.txId)
     }
   }
@@ -43,7 +43,7 @@ export const TokenDapp: FC<{
         <form onSubmit={handleWithdrawSubmit}>
           <>
             <h2 className={styles.title}>Alephium Token Faucet on {config.network}</h2>
-            <p>PublicKey: {context.account?.publicKey ?? '???'}</p>
+            <p>PublicKey: {wallet?.account?.publicKey ?? '???'}</p>
             <p>Maximum 2 tokens can be withdrawn at a time.</p>
             <table>
               <thead>

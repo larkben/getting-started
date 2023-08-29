@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { FC, useState } from 'react'
 import styles from '../styles/Home.module.css'
 import { withdrawToken } from '@/services/token.service'
@@ -23,7 +23,7 @@ export const TokenDapp: FC<{
     }
   }
 
-  const txStatusCallback = (status: node.TxStatus, numberOfChecks: number): Promise<any> => {
+  const txStatusCallback = useCallback(async (status: node.TxStatus, numberOfChecks: number): Promise<any> => {
     if (
       (status.type === 'Confirmed' && numberOfChecks > 2) ||
       (status.type === 'TxNotFound' && numberOfChecks > 3)
@@ -32,7 +32,7 @@ export const TokenDapp: FC<{
     }
 
     return Promise.resolve()
-  }
+  }, [setOngoingTxId])
 
   console.log("ongoing..", ongoingTxId)
   return (

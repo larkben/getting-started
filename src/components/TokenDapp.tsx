@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { FC, useState } from 'react'
 import styles from '../styles/Home.module.css'
 import { withdrawToken } from '@/services/token.service'
 import { TxStatus } from './TxStatus'
 import { useWallet } from '@alephium/web3-react'
-import { node } from "@alephium/web3"
+import { node, randomTxId, web3 } from "@alephium/web3"
 import { TokenFaucetConfig } from '@/services/utils'
 
 export const TokenDapp: FC<{
@@ -23,7 +23,7 @@ export const TokenDapp: FC<{
     }
   }
 
-  const txStatusCallback = (status: node.TxStatus, numberOfChecks: number): Promise<any> => {
+  const txStatusCallback = useCallback(async (status: node.TxStatus, numberOfChecks: number): Promise<any> => {
     if (
       (status.type === 'Confirmed' && numberOfChecks > 2) ||
       (status.type === 'TxNotFound' && numberOfChecks > 3)
@@ -32,7 +32,7 @@ export const TokenDapp: FC<{
     }
 
     return Promise.resolve()
-  }
+  }, [setOngoingTxId])
 
   console.log("ongoing..", ongoingTxId)
   return (

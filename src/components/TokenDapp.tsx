@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { FC, useState } from 'react'
 import styles from '../styles/Home.module.css'
 import { withdrawToken } from '@/services/token.service'
 import { TxStatus } from './TxStatus'
 import { useWallet } from '@alephium/web3-react'
-import { node, randomTxId, web3 } from "@alephium/web3"
+import { node } from "@alephium/web3"
 import { TokenFaucetConfig } from '@/services/utils'
 
 export const TokenDapp: FC<{

@@ -6,7 +6,7 @@ import { AlephiumConnectButton, useWallet } from '@alephium/web3-react'
 import { tokenFaucetConfig } from '@/services/utils'
 
 export default function Home() {
-  const wallet = useWallet()
+  const { connectionStatus } = useWallet()
 
   return (
     <>
@@ -19,7 +19,7 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        {!!wallet && (
+        {connectionStatus === 'connected' && (
           <TokenDapp config={tokenFaucetConfig} />
         )}
       </div>

@@ -10,15 +10,15 @@ import { TokenFaucetConfig } from '@/services/utils'
 export const TokenDapp: FC<{
   config: TokenFaucetConfig
 }> = ({ config }) => {
-  const wallet = useWallet()
+  const { signer, account } = useWallet()
   const addressGroup = config.groupIndex
   const [withdrawAmount, setWithdrawAmount] = useState('')
   const [ongoingTxId, setOngoingTxId] = useState<string>()
 
   const handleWithdrawSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (wallet?.signer) {
-      const result = await withdrawToken(wallet.signer, withdrawAmount, config.faucetTokenId)
+    if (signer) {
+      const result = await withdrawToken(signer, withdrawAmount, config.faucetTokenId)
       setOngoingTxId(result.txId)
     }
   }
@@ -43,7 +43,7 @@ export const TokenDapp: FC<{
         <form onSubmit={handleWithdrawSubmit}>
           <>
             <h2 className={styles.title}>Alephium Token Faucet on {config.network}</h2>
-            <p>PublicKey: {wallet?.account?.publicKey ?? '???'}</p>
+            <p>PublicKey: {account?.publicKey ?? '???'}</p>
             <p>Maximum 2 tokens can be withdrawn at a time.</p>
             <table>
               <thead>

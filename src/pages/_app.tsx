@@ -7,7 +7,7 @@ import { tokenFaucetConfig } from '@/services/utils'
 export default function App({ Component, pageProps }: AppProps) {
 
   return (
-    <AlephiumWalletProvider useTheme="web95" network={tokenFaucetConfig.network} addressGroup={tokenFaucetConfig.groupIndex}>
+    <AlephiumWalletProvider theme="web95" network={tokenFaucetConfig.network} addressGroup={tokenFaucetConfig.groupIndex}>
       <Component {...pageProps} />
     </AlephiumWalletProvider>
   )

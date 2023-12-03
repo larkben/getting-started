@@ -7,6 +7,8 @@ import { useWallet } from '@alephium/web3-react'
 import { node } from "@alephium/web3"
 import { TokenFaucetConfig } from '@/services/utils'
 
+//* Typescript Token Functions on Site Explanation
+
 export const TokenDapp: FC<{
   config: TokenFaucetConfig
 }> = ({ config }) => {

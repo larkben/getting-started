@@ -1,6 +1,8 @@
 import { NetworkId } from "@alephium/web3";
 import { loadDeployments } from "../../artifacts/ts/deployments"
 
+//* Design Interface
+
 export interface TokenFaucetConfig {
   network: NetworkId
   groupIndex: number
@@ -8,10 +10,14 @@ export interface TokenFaucetConfig {
   faucetTokenId: string
 }
 
+//* Explain Networks
+
 function getNetwork(): NetworkId {
   const network = (process.env.NEXT_PUBLIC_NETWORK ?? 'devnet') as NetworkId
   return network
 }
+
+//* Explain Interface Functions
 
 function getTokenFaucetConfig(): TokenFaucetConfig {
   const network = getNetwork()

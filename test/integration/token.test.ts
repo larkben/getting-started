@@ -1,4 +1,4 @@
-import { web3, Project, DUST_AMOUNT } from '@alephium/web3'
+import { web3, DUST_AMOUNT } from '@alephium/web3'
 import { testNodeWallet } from '@alephium/web3-test'
 import { deployToDevnet } from '@alephium/cli'
 import { TokenFaucet, Withdraw } from '../../artifacts/ts'
@@ -6,7 +6,6 @@ import { TokenFaucet, Withdraw } from '../../artifacts/ts'
 describe('integration tests', () => {
   beforeAll(async () => {
     web3.setCurrentNodeProvider('http://127.0.0.1:22973', undefined, fetch)
-    await Project.build()
   })
 
   it('should withdraw on devnet', async () => {
@@ -19,24 +18,22 @@ describe('integration tests', () => {
       await signer.setSelectedAccount(testAddress)
       const testGroup = account.group
 
-      const deployed = deployments.getDeployedContractResult(testGroup, 'TokenFaucet')
-      if (deployed === undefined) {
+      const faucet = deployments.getInstance(TokenFaucet, testGroup)
+      if (faucet === undefined) {
         console.log(`The contract is not deployed on group ${account.group}`)
         continue
       }
-      const tokenId = deployed.contractInstance.contractId
-      const tokenAddress = deployed.contractInstance.address
-      expect(deployed.contractInstance.groupIndex).toEqual(testGroup)
 
-      const faucet = TokenFaucet.at(tokenAddress)
+      expect(faucet.groupIndex).toEqual(testGroup)
       const initialState = await faucet.fetchState()
       const initialBalance = initialState.fields.balance
 
       // Call `withdraw` function 10 times
       for (let i = 0; i < 10; i++) {
-        await Withdraw.execute(signer, {
-          initialFields: { token: tokenId, amount: 1n },
-          attoAlphAmount: DUST_AMOUNT * 2n
+        await faucet.transact.withdraw({
+          signer: signer,
+          attoAlphAmount: DUST_AMOUNT * 3n,
+          args: { amount: 1n }
         })
 
         const newState = await faucet.fetchState()
@@ -46,4 +43,3 @@ describe('integration tests', () => {
     }
   }, 20000)
 })
-

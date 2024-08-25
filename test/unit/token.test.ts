@@ -1,4 +1,4 @@
-import { web3, Project, TestContractParams, addressFromContractId, AssetOutput, DUST_AMOUNT } from '@alephium/web3'
+import { web3, TestContractParams, addressFromContractId, AssetOutput, DUST_AMOUNT } from '@alephium/web3'
 import { expectAssertionError, randomContractId, testAddress } from '@alephium/web3-test'
 import { TokenFaucet, TokenFaucetTypes } from '../../artifacts/ts'
 
@@ -11,7 +11,6 @@ describe('unit tests', () => {
   // We initialize the fixture variables before all tests
   beforeAll(async () => {
     web3.setCurrentNodeProvider('http://127.0.0.1:22973', undefined, fetch)
-    await Project.build()
     testContractId = randomContractId()
     testTokenId = testContractId
     testContractAddress = addressFromContractId(testContractId)

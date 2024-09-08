@@ -1,0 +1,15 @@
+Abstract Contract AdminCalc (
+    mut admin: Address
+) {
+
+    enum CalcCodes {
+        NotAdmin = 0
+    }
+
+    @using(checkExternalCaller = true, updateFields = true)
+    pub fn editAdmin(newAdmin: Address) -> () {
+        checkCaller!(callerAddress!() == admin, CalcCodes.NotAdmin)
+
+        admin = newAdmin
+    }
+}

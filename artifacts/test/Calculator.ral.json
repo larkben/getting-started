@@ -1,0 +1,58 @@
+{
+  "version": "v3.6.2",
+  "name": "Calculator",
+  "bytecode": "0202154027010001010008d3c06fa1e7b4a000450c7b1600a100010000000005d373d2d082a001130a2aa101",
+  "codeHash": "ac40b964ea0f127cf99c3022ac234c9a639cf6aba3b0ce62479ff1b2cf1917e6",
+  "fieldsSig": {
+    "names": [
+      "admin",
+      "calculation"
+    ],
+    "types": [
+      "Address",
+      "U256"
+    ],
+    "isMutable": [
+      true,
+      true
+    ]
+  },
+  "eventsSig": [],
+  "functions": [
+    {
+      "name": "editAdmin",
+      "paramNames": [
+        "newAdmin"
+      ],
+      "paramTypes": [
+        "Address"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "addTen",
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": []
+    }
+  ],
+  "constants": [],
+  "enums": [
+    {
+      "name": "CalcCodes",
+      "fields": [
+        {
+          "name": "NotAdmin",
+          "value": {
+            "type": "U256",
+            "value": "0"
+          }
+        }
+      ]
+    }
+  ]
+}

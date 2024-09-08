@@ -1,0 +1,10 @@
+Contract Calculator (
+    mut admin: Address,
+    mut calculation: U256
+) extends AdminCalc(admin) {
+
+    @using(updateFields = true, checkExternalCaller = false)
+    pub fn addTen() -> () {
+        calculation = calculation + 10
+    }
+}

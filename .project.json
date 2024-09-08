@@ -10,17 +10,29 @@
     "ignoreUnusedFunctionReturnWarnings": false
   },
   "infos": {
+    "AddTen": {
+      "sourceFile": "test/calculator.ral",
+      "sourceCodeHash": "7ef686336af613e7cb12c5968b739cd4f3b2e62bc9eb34aa5db41e2072e48497",
+      "bytecodeDebugPatch": "",
+      "codeHashDebug": ""
+    },
     "AdminCalc": {
       "sourceFile": "test/calc_tools.ral",
-      "sourceCodeHash": "a15ce2a774e85d7940a8d2ea9c0b0038f155e952a5c774aeb959ced1cf74684e",
+      "sourceCodeHash": "7764a9f8fe215b93050be20f1e888cc57e5542f7a3372173c8c551b05a55728b",
       "bytecodeDebugPatch": "",
       "codeHashDebug": ""
     },
     "Calculator": {
       "sourceFile": "test/calculator.ral",
-      "sourceCodeHash": "b149bc5653d1e7e8e5452474193e28dfd2c829c74cedb8a38cd6768d64a6c730",
+      "sourceCodeHash": "7ef686336af613e7cb12c5968b739cd4f3b2e62bc9eb34aa5db41e2072e48497",
       "bytecodeDebugPatch": "",
       "codeHashDebug": "ac40b964ea0f127cf99c3022ac234c9a639cf6aba3b0ce62479ff1b2cf1917e6"
+    },
+    "EditAdmin": {
+      "sourceFile": "test/calc_tools.ral",
+      "sourceCodeHash": "7764a9f8fe215b93050be20f1e888cc57e5542f7a3372173c8c551b05a55728b",
+      "bytecodeDebugPatch": "",
+      "codeHashDebug": ""
     }
   }
 }

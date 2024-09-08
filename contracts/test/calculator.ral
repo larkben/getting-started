@@ -8,3 +8,9 @@ Contract Calculator (
         calculation = calculation + 10
     }
 }
+
+TxScript AddTen(
+    calc: Calculator
+) {
+    calc.addTen()
+}

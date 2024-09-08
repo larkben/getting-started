@@ -13,3 +13,10 @@ Abstract Contract AdminCalc (
         admin = newAdmin
     }
 }
+
+TxScript EditAdmin(
+    adminTools: AdminCalc,
+    newAdmin: Address
+) {
+    adminTools.editAdmin(newAdmin)
+}

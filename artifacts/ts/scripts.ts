@@ -12,3 +12,15 @@ import {
   HexString,
 } from "@alephium/web3";
 import { getContractByCodeHash } from "./contracts";
+import { default as AddTenScriptJson } from "../test/AddTen.ral.json";
+import { default as EditAdminScriptJson } from "../test/EditAdmin.ral.json";
+
+export const AddTen = new ExecutableScript<{ calc: HexString }>(
+  Script.fromJson(AddTenScriptJson, "", []),
+  getContractByCodeHash
+);
+
+export const EditAdmin = new ExecutableScript<{
+  adminTools: HexString;
+  newAdmin: Address;
+}>(Script.fromJson(EditAdminScriptJson, "", []), getContractByCodeHash);

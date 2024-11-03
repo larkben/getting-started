@@ -3,4 +3,5 @@
 /* eslint-disable */
 
 export * from "./Calculator";
+export * from "./WrappedWangProtocol";
 export * from "./scripts";

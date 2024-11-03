@@ -21,6 +21,7 @@ import {
   callMethod,
   multicallMethods,
   fetchContractState,
+  Asset,
   ContractInstance,
   getContractEventsCurrentCount,
   TestContractParamsWithoutMaps,
@@ -30,9 +31,10 @@ import {
   signExecuteMethod,
   addStdIdToFields,
   encodeContractFields,
+  Narrow,
 } from "@alephium/web3";
 import { default as CalculatorContractJson } from "../test/Calculator.ral.json";
-import { getContractByCodeHash } from "./contracts";
+import { getContractByCodeHash, registerContract } from "./contracts";
 
 // Custom types for the contract
 export namespace CalculatorTypes {
@@ -121,6 +123,14 @@ class Factory extends ContractFactory<
       return testMethod(this, "addTen", params, getContractByCodeHash);
     },
   };
+
+  stateForTest(
+    initFields: CalculatorTypes.Fields,
+    asset?: Asset,
+    address?: string
+  ) {
+    return this.stateForTest_(initFields, asset, address, undefined);
+  }
 }
 
 // Use this object to test and deploy the contract
@@ -132,6 +142,7 @@ export const Calculator = new Factory(
     []
   )
 );
+registerContract(Calculator);
 
 // Use this class to interact with the blockchain
 export class CalculatorInstance extends ContractInstance {

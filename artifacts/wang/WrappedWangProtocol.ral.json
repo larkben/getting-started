@@ -1,0 +1,201 @@
+{
+  "version": "v3.8.5",
+  "name": "WrappedWangProtocol",
+  "bytecode": "070b0e1c402a40384046408c40d84104412241414156010000000103d38d098809ce0002010000000103d3c70bdefca00002010000000103d34ffef083ce0102010000000103d337c51df1ce0202010000000103d36638d1f4a0020201010102004026d30178d92f16000c330d7ba00116002aa101b417011601b2a002a71601b200031600aab2160100001600aaa00016002ba100a003a0022aa10305160116005f0101010300402ad31bccb2f216000c330d7ba00016002aa100b4170116000d2d17021601b2a002a71601b200001600aab21601ce021602aaa00116022ba101a003a0022aa10306160116005f010200000017d3c80ec82ea0011347d0310e7bb2ce010003a001aab2ce010000a000aace01b4450f7bce01b001020000000ed3d6607dbbce01b4450f7bb2ce01a003a7a003a0032ba10301010101000fd38e4da760ce01b4450f7bb4b200001600aaa00016002aa100010001010008d36f682d7ace01b4450f7b1600a102",
+  "codeHash": "69c054e7f2cd8f098e238b8374b493150389ed67f617f6e1baaa6c4c6b329e08",
+  "fieldsSig": {
+    "names": [
+      "wwang",
+      "wwangamount",
+      "owner",
+      "wang",
+      "wangamount",
+      "fee",
+      "feescollected"
+    ],
+    "types": [
+      "ByteVec",
+      "U256",
+      "Address",
+      "ByteVec",
+      "U256",
+      "U256",
+      "U256"
+    ],
+    "isMutable": [
+      false,
+      true,
+      false,
+      false,
+      true,
+      true,
+      true
+    ]
+  },
+  "eventsSig": [
+    {
+      "name": "WrappedWangMinted",
+      "fieldNames": [
+        "who",
+        "amount"
+      ],
+      "fieldTypes": [
+        "Address",
+        "U256"
+      ]
+    },
+    {
+      "name": "OgWangRedeemed",
+      "fieldNames": [
+        "who",
+        "amount"
+      ],
+      "fieldTypes": [
+        "Address",
+        "U256"
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "name": "getWWangToken",
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "ByteVec"
+      ]
+    },
+    {
+      "name": "getWWangAmount",
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "U256"
+      ]
+    },
+    {
+      "name": "getOwner",
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "Address"
+      ]
+    },
+    {
+      "name": "getWang",
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "ByteVec"
+      ]
+    },
+    {
+      "name": "getFee",
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "U256"
+      ]
+    },
+    {
+      "name": "mintwrapped",
+      "paramNames": [
+        "amount"
+      ],
+      "paramTypes": [
+        "U256"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "mintog",
+      "paramNames": [
+        "amount"
+      ],
+      "paramTypes": [
+        "U256"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "destroyprotocol",
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": []
+    },
+    {
+      "name": "collectfees",
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": []
+    },
+    {
+      "name": "topupwwang",
+      "paramNames": [
+        "amount"
+      ],
+      "paramTypes": [
+        "U256"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "editfee",
+      "paramNames": [
+        "newfee"
+      ],
+      "paramTypes": [
+        "U256"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    }
+  ],
+  "constants": [],
+  "enums": [
+    {
+      "name": "ErrorCodes",
+      "fields": [
+        {
+          "name": "InvalidAmount",
+          "value": {
+            "type": "U256",
+            "value": "1"
+          }
+        },
+        {
+          "name": "WangInContract",
+          "value": {
+            "type": "U256",
+            "value": "2"
+          }
+        },
+        {
+          "name": "InvalidCaller",
+          "value": {
+            "type": "U256",
+            "value": "3"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { FC, useState } from 'react'
 import styles from '../styles/Home.module.css'
-import { withdrawToken } from '@/services/token.service'
+import { addTenService } from '@/services/token.service'
 import { TxStatus } from './TxStatus'
 import { useWallet } from '@alephium/web3-react'
 import { node } from "@alephium/web3"
@@ -18,7 +18,7 @@ export const TokenDapp: FC<{
   const handleWithdrawSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (signer) {
-      const result = await withdrawToken(signer, withdrawAmount, config.faucetTokenId)
+      const result = await addTenService(signer, "8519d36e13d2ff9a3f1cb4727bbb1e9a790d68e080dae2e7e643146bf1a21800")
       setOngoingTxId(result.txId)
     }
   }
@@ -54,7 +54,6 @@ export const TokenDapp: FC<{
               </thead>
               <tbody>
                 <tr key={addressGroup} style={{ background: 'red', color: 'white' }}>
-                  <td>{config.faucetTokenId}</td>
                   <td>{addressGroup}</td>
                 </tr>
               </tbody>

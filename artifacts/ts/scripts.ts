@@ -13,10 +13,28 @@ import {
 } from "@alephium/web3";
 import { getContractByCodeHash } from "./contracts";
 import { default as AddTenScriptJson } from "../test/AddTen.ral.json";
+import { default as CollectWangFeesScriptJson } from "../wang/CollectWangFees.ral.json";
+import { default as DestroyWangProtocolScriptJson } from "../wang/DestroyWangProtocol.ral.json";
 import { default as EditAdminScriptJson } from "../test/EditAdmin.ral.json";
+import { default as EditWangFeesScriptJson } from "../wang/EditWangFees.ral.json";
+import { default as MintWWangScriptJson } from "../wang/MintWWang.ral.json";
+import { default as MintWangScriptJson } from "../wang/MintWang.ral.json";
+import { default as TopupWangProtocolScriptJson } from "../wang/TopupWangProtocol.ral.json";
 
 export const AddTen = new ExecutableScript<{ calc: HexString }>(
   Script.fromJson(AddTenScriptJson, "", []),
+  getContractByCodeHash
+);
+
+export const CollectWangFees = new ExecutableScript<{ contract: HexString }>(
+  Script.fromJson(CollectWangFeesScriptJson, "", []),
+  getContractByCodeHash
+);
+
+export const DestroyWangProtocol = new ExecutableScript<{
+  contract: HexString;
+}>(
+  Script.fromJson(DestroyWangProtocolScriptJson, "", []),
   getContractByCodeHash
 );
 
@@ -24,3 +42,23 @@ export const EditAdmin = new ExecutableScript<{
   adminTools: HexString;
   newAdmin: Address;
 }>(Script.fromJson(EditAdminScriptJson, "", []), getContractByCodeHash);
+
+export const EditWangFees = new ExecutableScript<{
+  contract: HexString;
+  newfee: bigint;
+}>(Script.fromJson(EditWangFeesScriptJson, "", []), getContractByCodeHash);
+
+export const MintWWang = new ExecutableScript<{
+  contract: HexString;
+  amount: bigint;
+}>(Script.fromJson(MintWWangScriptJson, "", []), getContractByCodeHash);
+
+export const MintWang = new ExecutableScript<{
+  contract: HexString;
+  amount: bigint;
+}>(Script.fromJson(MintWangScriptJson, "", []), getContractByCodeHash);
+
+export const TopupWangProtocol = new ExecutableScript<{
+  contract: HexString;
+  amount: bigint;
+}>(Script.fromJson(TopupWangProtocolScriptJson, "", []), getContractByCodeHash);

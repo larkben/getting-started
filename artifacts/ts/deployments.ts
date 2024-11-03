@@ -4,23 +4,21 @@
 
 import { RunScriptResult, DeployContractExecutionResult } from "@alephium/cli";
 import { NetworkId } from "@alephium/web3";
-import { TokenFaucet, TokenFaucetInstance } from ".";
+import { Calculator, CalculatorInstance } from ".";
 import { default as testnetDeployments } from "../.deployments.testnet.json";
 import { default as devnetDeployments } from "../.deployments.devnet.json";
 
 export type Deployments = {
   deployerAddress: string;
-  contracts: {
-    TokenFaucet: DeployContractExecutionResult<TokenFaucetInstance>;
-  };
+  contracts: { Calculator: DeployContractExecutionResult<CalculatorInstance> };
 };
 
 function toDeployments(json: any): Deployments {
   const contracts = {
-    TokenFaucet: {
-      ...json.contracts["TokenFaucet"],
-      contractInstance: TokenFaucet.at(
-        json.contracts["TokenFaucet"].contractInstance.address
+    Calculator: {
+      ...json.contracts["Calculator"],
+      contractInstance: Calculator.at(
+        json.contracts["Calculator"].contractInstance.address
       ),
     },
   };
@@ -43,7 +41,7 @@ export function loadDeployments(
   if (deployments === undefined) {
     throw Error("The contract has not been deployed to the " + networkId);
   }
-  const allDeployments = Array.isArray(deployments)
+  const allDeployments: any[] = Array.isArray(deployments)
     ? deployments
     : [deployments];
   if (deployerAddress === undefined) {

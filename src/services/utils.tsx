@@ -4,22 +4,19 @@ import { loadDeployments } from "../../artifacts/ts/deployments"
 export interface TokenFaucetConfig {
   network: NetworkId
   groupIndex: number
-  tokenFaucetAddress: string
-  faucetTokenId: string
 }
 
 function getNetwork(): NetworkId {
-  const network = (process.env.NEXT_PUBLIC_NETWORK ?? 'devnet') as NetworkId
+  const network = (process.env.NEXT_PUBLIC_NETWORK ?? 'testnet') as NetworkId
   return network
 }
 
+
 function getTokenFaucetConfig(): TokenFaucetConfig {
   const network = getNetwork()
-  const tokenFaucet = loadDeployments(network).contracts.TokenFaucet.contractInstance
-  const groupIndex = tokenFaucet.groupIndex
-  const tokenFaucetAddress = tokenFaucet.address
-  const faucetTokenId = tokenFaucet.contractId
-  return { network, groupIndex, tokenFaucetAddress, faucetTokenId }
+  const groupIndex = 0
+  return { network, groupIndex }
 }
+
 
 export const tokenFaucetConfig = getTokenFaucetConfig()

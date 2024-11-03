@@ -1,0 +1,25 @@
+{
+  "version": "v3.8.5",
+  "name": "DestroyWangProtocol",
+  "bytecodeTemplate": "010103000000040c0c{0}0107",
+  "fieldsSig": {
+    "names": [
+      "contract"
+    ],
+    "types": [
+      "WrappedWangProtocol"
+    ],
+    "isMutable": [
+      false
+    ]
+  },
+  "functions": [
+    {
+      "name": "main",
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": []
+    }
+  ]
+}

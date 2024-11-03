@@ -1,5 +1,5 @@
 {
-  "contractPath": "",
+  "contractPath": "contracts",
   "compilerOptions": {
     "ignoreUnusedConstantsWarnings": false
   }

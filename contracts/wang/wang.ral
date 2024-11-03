@@ -1,0 +1,178 @@
+Contract WrappedWangProtocol (
+    wwang: ByteVec,
+    mut wwangamount: U256,
+    owner: Address,
+    //
+    wang: ByteVec,
+    mut wangamount: U256,
+    //
+    mut fee: U256,
+    mut feescollected: U256
+) {
+
+    event WrappedWangMinted(who: Address, amount: U256)
+    event OgWangRedeemed(who: Address, amount: U256)
+
+    enum ErrorCodes {
+        InvalidAmount = 1
+        WangInContract = 2
+        InvalidCaller = 3
+    }
+
+    pub fn getWWangToken() -> ByteVec {
+        return wwang
+    }
+
+    pub fn getWWangAmount() -> U256 {
+        return wwangamount
+    }
+
+    pub fn getOwner() -> Address {
+        return owner
+    }
+
+    pub fn getWang() -> ByteVec {
+        return wang
+    }
+
+    pub fn getFee() -> U256 {
+        return fee
+    }
+
+    @using(preapprovedAssets = true, assetsInContract = true, updateFields = true, checkExternalCaller = false)
+    pub fn mintwrapped(amount: U256) -> () {
+
+        assert!(amount > 0, ErrorCodes.InvalidAmount)
+
+        wangamount = wangamount + amount
+
+        let minter = callerAddress!()
+
+        transferToken!(minter, selfAddress!(), ALPH, fee)
+        transferToken!(minter, selfAddress!(), getWang(), amount)
+
+        transferToken!(selfAddress!(), minter, getWWangToken(), amount) 
+
+        wwangamount = wwangamount - amount
+
+        feescollected = feescollected + fee
+
+        emit WrappedWangMinted(minter, amount)
+    }
+
+    @using(preapprovedAssets = true, assetsInContract = true, updateFields = true, checkExternalCaller = false)
+    pub fn mintog(amount: U256) -> () {
+
+        assert!(amount > 0, ErrorCodes.InvalidAmount)
+
+        wwangamount = wwangamount + amount
+
+        let minter = callerAddress!()
+
+        let mintedamount = amount / 1
+
+        transferToken!(minter, selfAddress!(), ALPH, fee)
+        transferToken!(minter, selfAddress!(), getWWangToken(), amount)
+
+        transferToken!(selfAddress!(), minter, wang, mintedamount)
+        
+        wangamount = wangamount - mintedamount
+
+        feescollected = feescollected + fee
+
+        emit OgWangRedeemed(minter, amount)
+    }
+
+    @using(preapprovedAssets = false, assetsInContract = true, updateFields = false, checkExternalCaller = true)
+    pub fn destroyprotocol() -> () {
+
+        assert!(wangamount < 2000, ErrorCodes.WangInContract) // 5 is a saftey net here
+
+        transferToken!(selfAddress!(), owner, getWang(), wangamount)
+
+        transferToken!(selfAddress!(), owner, getWWangToken(), wwangamount)
+
+        checkCaller!(owner == callerAddress!(), ErrorCodes.InvalidCaller)
+
+        destroySelf!(owner)
+    }
+
+    @using(preapprovedAssets = false, assetsInContract = true, updateFields = true, checkExternalCaller = true)
+    pub fn collectfees() -> () {
+
+        checkCaller!(owner == callerAddress!(), ErrorCodes.InvalidCaller)
+
+        transferToken!(selfAddress!(), owner, ALPH, feescollected)
+
+        feescollected = feescollected - feescollected
+    }
+
+    @using(preapprovedAssets = true, assetsInContract = true, updateFields = true, checkExternalCaller = true)
+    pub fn topupwwang(amount: U256) -> () {
+
+        checkCaller!(owner == callerAddress!(), ErrorCodes.InvalidCaller)
+
+        transferToken!(callerAddress!(), selfAddress!(), getWWangToken(), amount)
+
+        wwangamount = wwangamount + amount
+    }
+
+    @using(preapprovedAssets = false, assetsInContract = false, updateFields = true, checkExternalCaller = true)
+    pub fn editfee(newfee: U256) -> () {
+
+        checkCaller!(owner == callerAddress!(), ErrorCodes.InvalidCaller)
+
+        fee = newfee
+    }
+    
+}
+
+TxScript MintWWang(
+    contract: WrappedWangProtocol,
+    amount: U256
+) {
+    let wrappedalph = contract.getWWangToken()
+
+    let fee = contract.getFee()
+
+    contract.mintwrapped{callerAddress!() -> wrappedalph: amount, ALPH: fee}(amount)
+}
+
+TxScript MintWang(
+    contract: WrappedWangProtocol,
+    amount: U256
+) {
+    let ogalph = contract.getWang()
+
+    let fee = contract.getFee()
+
+    contract.mintog{callerAddress!() -> ogalph: amount, ALPH: fee}(amount)
+}
+
+TxScript CollectWangFees(
+    contract: WrappedWangProtocol
+) {
+    contract.collectfees()
+}
+
+TxScript EditWangFees(
+    contract: WrappedWangProtocol,
+    newfee: U256
+) {
+    contract.editfee(newfee)
+}
+
+TxScript DestroyWangProtocol(
+    contract: WrappedWangProtocol
+) {
+    contract.destroyprotocol()
+}
+
+TxScript TopupWangProtocol(
+    contract: WrappedWangProtocol,
+    amount: U256
+) {
+    let token = contract.getWWangToken()
+
+    contract.topupwwang{callerAddress!() -> token: amount}(amount)
+}

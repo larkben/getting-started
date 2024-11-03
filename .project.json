@@ -1,5 +1,5 @@
 {
-  "fullNodeVersion": "v3.6.2",
+  "fullNodeVersion": "v3.6.0",
   "compilerOptionsUsed": {
     "ignoreUnusedConstantsWarnings": false,
     "ignoreUnusedVariablesWarnings": false,
@@ -7,7 +7,8 @@
     "ignoreUnusedPrivateFunctionsWarnings": false,
     "ignoreUpdateFieldsCheckWarnings": false,
     "ignoreCheckExternalCallerWarnings": false,
-    "ignoreUnusedFunctionReturnWarnings": false
+    "ignoreUnusedFunctionReturnWarnings": false,
+    "skipAbstractContractCheck": false
   },
   "infos": {
     "AddTen": {
@@ -28,11 +29,53 @@
       "bytecodeDebugPatch": "",
       "codeHashDebug": "ac40b964ea0f127cf99c3022ac234c9a639cf6aba3b0ce62479ff1b2cf1917e6"
     },
+    "CollectWangFees": {
+      "sourceFile": "wang/wang.ral",
+      "sourceCodeHash": "751f181671d14881f445e41bb4dcd471675d9cb5f6a46d3d3f1bc8328bbecd56",
+      "bytecodeDebugPatch": "",
+      "codeHashDebug": ""
+    },
+    "DestroyWangProtocol": {
+      "sourceFile": "wang/wang.ral",
+      "sourceCodeHash": "751f181671d14881f445e41bb4dcd471675d9cb5f6a46d3d3f1bc8328bbecd56",
+      "bytecodeDebugPatch": "",
+      "codeHashDebug": ""
+    },
     "EditAdmin": {
       "sourceFile": "test/calc_tools.ral",
       "sourceCodeHash": "7764a9f8fe215b93050be20f1e888cc57e5542f7a3372173c8c551b05a55728b",
       "bytecodeDebugPatch": "",
       "codeHashDebug": ""
+    },
+    "EditWangFees": {
+      "sourceFile": "wang/wang.ral",
+      "sourceCodeHash": "751f181671d14881f445e41bb4dcd471675d9cb5f6a46d3d3f1bc8328bbecd56",
+      "bytecodeDebugPatch": "",
+      "codeHashDebug": ""
+    },
+    "MintWWang": {
+      "sourceFile": "wang/wang.ral",
+      "sourceCodeHash": "751f181671d14881f445e41bb4dcd471675d9cb5f6a46d3d3f1bc8328bbecd56",
+      "bytecodeDebugPatch": "",
+      "codeHashDebug": ""
+    },
+    "MintWang": {
+      "sourceFile": "wang/wang.ral",
+      "sourceCodeHash": "751f181671d14881f445e41bb4dcd471675d9cb5f6a46d3d3f1bc8328bbecd56",
+      "bytecodeDebugPatch": "",
+      "codeHashDebug": ""
+    },
+    "TopupWangProtocol": {
+      "sourceFile": "wang/wang.ral",
+      "sourceCodeHash": "751f181671d14881f445e41bb4dcd471675d9cb5f6a46d3d3f1bc8328bbecd56",
+      "bytecodeDebugPatch": "",
+      "codeHashDebug": ""
+    },
+    "WrappedWangProtocol": {
+      "sourceFile": "wang/wang.ral",
+      "sourceCodeHash": "751f181671d14881f445e41bb4dcd471675d9cb5f6a46d3d3f1bc8328bbecd56",
+      "bytecodeDebugPatch": "",
+      "codeHashDebug": "69c054e7f2cd8f098e238b8374b493150389ed67f617f6e1baaa6c4c6b329e08"
     }
   }
 }
